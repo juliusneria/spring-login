@@ -8,11 +8,10 @@ import java.util.Collection;
 /**
  * Created by juliusneria on 15/05/2018.
  */
-@Entity
-@EnableAutoConfiguration
+//@Entity
 public class Privilege {
 
-    @Id
+    /*@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
@@ -86,5 +85,5 @@ public class Privilege {
         final StringBuilder builder = new StringBuilder();
         builder.append("Privilege [name=").append(name).append("]").append("[id=").append(id).append("]");
         return builder.toString();
-    }
+    }*/
 }

@@ -1,8 +1,11 @@
 package com.sample.login.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -13,14 +16,20 @@ public class Role {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@ManyToMany(mappedBy = "roles")
-	private Collection<User> users;
+	@OneToMany(fetch = FetchType.EAGER, targetEntity = User.class, cascade=CascadeType.ALL)
+	@JoinTable(name = "role_users",
+			joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
+			inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+	private List<User> users;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	/*@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "roles_privileges", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id"))
-	private Collection<Privilege> privileges;
+	private Collection<Privilege> privileges;*/
 
 	private String name;
+
+	@ElementCollection
+	private List<String> privileges;
 
 	public Role() {
 		super();
@@ -30,8 +39,6 @@ public class Role {
 		super();
 		this.name = name;
 	}
-
-	//
 
 	public Long getId() {
 		return id;
@@ -49,23 +56,23 @@ public class Role {
 		this.name = name;
 	}
 
-	public Collection<User> getUsers() {
+	public List<User> getUsers() {
 		return users;
 	}
 
-	public void setUsers(final Collection<User> users) {
+	public void setUsers(final List<User> users) {
 		this.users = users;
 	}
 
-	public Collection<Privilege> getPrivileges() {
+	public List<String> getPrivileges() {
 		return privileges;
 	}
 
-	public void setPrivileges(final Collection<Privilege> privileges) {
+	public void setPrivileges(List<String> privileges) {
 		this.privileges = privileges;
 	}
 
-	@Override
+	/*@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -96,5 +103,5 @@ public class Role {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("Role [name=").append(name).append("]").append("[id=").append(id).append("]");
 		return builder.toString();
-	}
+	}*/
 }

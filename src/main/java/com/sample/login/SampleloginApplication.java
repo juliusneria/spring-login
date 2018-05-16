@@ -14,13 +14,6 @@ import javax.validation.Valid;
 @SpringBootApplication
 public class SampleloginApplication {
 
-	/*@RequestMapping(value="/login", method = RequestMethod.POST)
-	public ModelAndView login(@Valid User user){
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("login");
-		return modelAndView;
-	}*/
-
 	public static void main(String[] args) {
 		SpringApplication.run(SampleloginApplication.class, args);
 	}

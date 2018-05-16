@@ -5,7 +5,6 @@ package com.sample.login.auth;
  */
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -22,20 +21,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    /*@Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @Autowired
-    private DataSource dataSource;*/
-
     @Autowired
     private UserDetailService userDetailService;
-
-    /*@Value("${spring.queries.users-query}")
-    private String usersQuery;
-
-    @Value("${spring.queries.roles-query}")
-    private String rolesQuery;*/
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
@@ -48,16 +35,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.
                 authorizeRequests()
-                .antMatchers("/login", "/index").permitAll()
-                .antMatchers("/write").hasAuthority("WRITE_PRIVILEGE")
-                .antMatchers("/").hasRole("USER").anyRequest()
-                .authenticated().and().csrf().disable().formLogin()
+                .antMatchers("/login","/","/index").permitAll()
+                /*.antMatchers("/write").hasAuthority("WRITE_PRIVILEGE")
+                .antMatchers("/read").hasAuthority("READ_PRIVILEGE")*/
+                .antMatchers("/user").hasRole("USER")
+                .antMatchers("/admin", "/createAdmin").hasRole("ADMIN").anyRequest()
+                .authenticated().and().csrf().disable()
+                .formLogin()
                 .loginPage("/login").failureUrl("/login?error=true")
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .and().logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/").and().exceptionHandling();
+                .logoutSuccessUrl("/login").and().exceptionHandling();
     }
 
     @Override
@@ -80,19 +70,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }
-
-
-
-    /*@Bean
-    @Override
-    public UserDetailsService userDetailsService(){
-        UserDetails user =
-                User.withDefaultPasswordEncoder()
-                        .username("user")
-                        .password("password")
-                        .roles("USER")
-                        .build();
-
-        return new InMemoryUserDetailsManager(user);
-    }*/
 }

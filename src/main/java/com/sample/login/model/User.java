@@ -1,5 +1,6 @@
 package com.sample.login.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 import javax.persistence.*;
@@ -26,14 +27,26 @@ public class User{
     private boolean enabled;
     private boolean tokenExpired;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(
-                    name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "role_id", referencedColumnName = "id"))
-    private Collection<Role> roles;
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Role.class, cascade=CascadeType.ALL)
+    @JoinTable(name = "role_users",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Role role;
+
+    public User() {
+        super();
+    }
+
+    public User(String email, String firstName, String lastName, String password, boolean enabled, boolean tokenExpired) {
+        super();
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.enabled = enabled;
+        this.tokenExpired = tokenExpired;
+    }
 
     public Long getId() {
         return id;
@@ -91,11 +104,11 @@ public class User{
         this.tokenExpired = tokenExpired;
     }
 
-    public Collection<Role> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(Collection<Role> roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

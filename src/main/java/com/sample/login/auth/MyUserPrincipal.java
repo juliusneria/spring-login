@@ -38,13 +38,13 @@ public class MyUserPrincipal implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities
                 = new ArrayList<>();
-        for (Role role: user.getRoles()) {
+        authorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
+        /*for (Role role: user.getRole()) {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
             role.getPrivileges().stream()
                     .map(p -> new SimpleGrantedAuthority(p.getName()))
                     .forEach(authorities::add);
-        }
-
+        }*/
         return authorities;
     }
 
@@ -93,8 +93,6 @@ public class MyUserPrincipal implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
-    //
 
     public User getUser() {
         return user;
