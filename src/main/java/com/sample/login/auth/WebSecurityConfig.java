@@ -35,11 +35,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.
                 authorizeRequests()
-                .antMatchers("/login","/","/index").permitAll()
-                /*.antMatchers("/write").hasAuthority("WRITE_PRIVILEGE")
-                .antMatchers("/read").hasAuthority("READ_PRIVILEGE")*/
+                .antMatchers("/login").permitAll()
+                .antMatchers("/user/**", "/role/**").permitAll()
+                .antMatchers("/write").hasAuthority("WRITE_PRIVILEGE")
+                .antMatchers("/read","/","/index").hasAuthority("READ_PRIVILEGE")
                 .antMatchers("/user").hasRole("USER")
-                .antMatchers("/admin", "/createAdmin").hasRole("ADMIN").anyRequest()
+                .antMatchers("/admin").hasRole("ADMIN").anyRequest()
                 .authenticated().and().csrf().disable()
                 .formLogin()
                 .loginPage("/login").failureUrl("/login?error=true")

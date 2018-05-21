@@ -1,3 +1,4 @@
+/*
 package com.sample.login.auth;
 
 import com.sample.login.model.Role;
@@ -29,8 +30,10 @@ public class InitialDataLoader implements
     @Autowired
     private RoleRepository roleRepository;
 
-    /*@Autowired
-    private PrivilegeRepository privilegeRepository;*/
+    */
+/*@Autowired
+    private PrivilegeRepository privilegeRepository;*//*
+
 
     @Override
     @Transactional
@@ -76,3 +79,4 @@ public class InitialDataLoader implements
         return new BCryptPasswordEncoder();
     }
 }
+*/

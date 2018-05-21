@@ -1,6 +1,5 @@
 package com.sample.login.auth;
 
-import com.sample.login.model.Role;
 import com.sample.login.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -39,12 +38,9 @@ public class MyUserPrincipal implements UserDetails {
         List<GrantedAuthority> authorities
                 = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
-        /*for (Role role: user.getRole()) {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
-            role.getPrivileges().stream()
-                    .map(p -> new SimpleGrantedAuthority(p.getName()))
-                    .forEach(authorities::add);
-        }*/
+        user.getRole().getPrivileges().stream()
+                .map(SimpleGrantedAuthority::new)
+                .forEach(authorities::add);
         return authorities;
     }
 

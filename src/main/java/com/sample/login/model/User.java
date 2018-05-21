@@ -1,11 +1,12 @@
 package com.sample.login.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 import javax.persistence.*;
 import javax.persistence.Id;
-import java.util.Collection;
 
 /**
  * Created by juliusneria on 11/05/2018.
@@ -27,11 +28,11 @@ public class User{
     private boolean enabled;
     private boolean tokenExpired;
 
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Role.class, cascade=CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Role.class, cascade = CascadeType.ALL)
     @JoinTable(name = "role_users",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonBackReference
     private Role role;
 
     public User() {
@@ -56,6 +57,14 @@ public class User{
         this.id = id;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -70,14 +79,6 @@ public class User{
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPassword() {
